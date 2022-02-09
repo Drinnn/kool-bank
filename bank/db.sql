@@ -7,6 +7,7 @@ CREATE TABLE credit_cards (
 	CVV VARCHAR NOT NULL,
 	balance float not null,
 	balance_limit float not null,
+	created_at timestamp not null,
     PRIMARY KEY (id)
 );
 

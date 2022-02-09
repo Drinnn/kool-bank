@@ -2,4 +2,7 @@ module github.com/Drinnn/kool-bank
 
 go 1.15
 
-require github.com/satori/go.uuid v1.2.0 // indirect
+require (
+	github.com/lib/pq v1.10.4
+	github.com/satori/go.uuid v1.2.0
+)

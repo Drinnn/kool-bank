@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 
 	"github.com/Drinnn/kool-bank/domain"
 )
@@ -53,7 +54,7 @@ func (r *TransactionRepositoryDb) SaveTransaction(transaction *domain.Transactio
 }
 
 func (r *TransactionRepositoryDb) updateCreditCardBalance(creditCard *domain.CreditCard) error {
-	_, err := r.db.Exec("update credit_cards set balance = $1 where id = $2",
+	_, err := r.db.Exec("update credit_cards set balance_limit = $1 where id = $2",
 		creditCard.Balance, creditCard.ID)
 	if err != nil {
 		return err
@@ -64,7 +65,7 @@ func (r *TransactionRepositoryDb) updateCreditCardBalance(creditCard *domain.Cre
 
 func (r *TransactionRepositoryDb) CreateCreditCard(creditCard *domain.CreditCard) error {
 	stmt, err := r.db.Prepare(`insert into credit_cards(id, name, number, expiration_month,
-		expiration_year, cvv, balance, limit, created_at)
+		expiration_year, cvv, balance, balance_limit, created_at)
 		values($1, $2, $3, $4, $5, $6, $7, $8, $9)`)
 	if err != nil {
 		return err
@@ -91,4 +92,16 @@ func (r *TransactionRepositoryDb) CreateCreditCard(creditCard *domain.CreditCard
 	}
 
 	return nil
+}
+
+func (r *TransactionRepositoryDb) GetCreditCard(creditCard *domain.CreditCard) (*domain.CreditCard, error) {
+	cc := &domain.CreditCard{}
+	stmt, err := r.db.Prepare("select id, balance, balance_limit from credit_cards where number=$1")
+	if err != nil {
+		return cc, err
+	}
+	if err = stmt.QueryRow(creditCard.Number).Scan(&cc.ID, &cc.Balance, &cc.Limit); err != nil {
+		return cc, errors.New("credit card does not exists")
+	}
+	return cc, nil
 }
