@@ -6,9 +6,9 @@ type TransactionDto struct {
 	ID              string
 	Name            string
 	Number          string
-	ExpirationMonth string
-	ExpirationYear  string
-	CVV             string
+	ExpirationMonth int32
+	ExpirationYear  int32
+	CVV             int32
 	Amount          float64
 	Store           string
 	Description     string
