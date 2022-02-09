@@ -16,6 +16,7 @@ type Transaction struct {
 	CreatedAt    time.Time
 }
 
+// Implementing in the same context for the sake of simplicity
 type TransactionRepository interface {
 	SaveTransaction(transaction *Transaction, creditCard *CreditCard) error
 	GetCreditCard(creditCard *CreditCard) (*CreditCard, error)
