@@ -16,6 +16,12 @@ type Transaction struct {
 	CreatedAt    time.Time
 }
 
+type TransactionRepository interface {
+	SaveTransaction(transaction *Transaction, creditCard *CreditCard) error
+	GetCreditCard(creditCard *CreditCard) (*CreditCard, error)
+	CreateCreditCard(creditCard *CreditCard) error
+}
+
 func NewTransaction() *Transaction {
 	t := &Transaction{}
 
